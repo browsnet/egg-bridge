@@ -140,8 +140,8 @@ module.exports = agent => {
   });
 };
 
-see [example/app/bridge](example/app/bridge) for more detail.
 ```
+see [example/app/bridge](example/app/bridge) for more detail.
 
 ## Questions & Suggestions
 
