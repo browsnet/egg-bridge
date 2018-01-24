@@ -36,7 +36,7 @@ $ npm i egg-bridge --save
 // {app_root}/config/plugin.js
 exports.bridge = {
   enable: true,
-  package: 'egg-bridge',
+  package: "egg-bridge"
 };
 ```
 
@@ -45,14 +45,97 @@ exports.bridge = {
 ```js
 // {app_root}/config/config.default.js
 exports.bridge = {
+  timeout: 3000
 };
+```
+
+```js
+// {app_root}/app/bridge/handle.js
+const { BaseContextClass } = require("egg");
+class Handle extends BaseContextClass {
+  async bridge(...args) {
+    return args;
+  }
+}
+module.exports = Handle;
 ```
 
 see [config/config.default.js](config/config.default.js) for more detail.
 
+## API
+
+call from worker process:
+
+```js
+// wait agent process handle result
+await app.bridge().handle()
+// wait agent process handle result,with ctx
+await app.bridge(ctx).handle()
+// just execute agent process handle
+app.bridge('nowait').handle()
+// just execute agent process handle,with ctx
+app.bridge(ctx,'nowait').handle()
+// execlute handle in this process
+await app.bridge('self').handle()
+// execlute handle in this process,with ctx
+await app.bridge(ctx,'self').handle()
+// wait agent process handle result,in package
+await app.bridge().package.subpackage.handle()
+```
+
+call from agent process:
+
+```js
+// wait random worker process handle result
+await agent.bridge().handle()
+// wait random worker process handle result,with ctx
+await agent.bridge(ctx).handle()
+// just execute random worker process handle
+agent.bridge('nowait').handle()
+// just execute random worker process handle,with ctx
+agent.bridge(ctx,'nowait').handle()
+// execlute handle in agent process
+await agent.bridge('self').handle()
+// execlute handle in agent process,with ctx
+await agent.bridge(ctx,'self').handle()
+// wait random worker process handle result,in package
+await agent.bridge().package.subpackage.handle()
+```
+
 ## Example
 
-<!-- example here -->
+```js
+// {app_root}/app/bridge/hello.js
+const { BaseContextClass } = require('egg');
+class Hello extends BaseContextClass {
+  // optional
+  static get timeout(){
+    return 2000;
+  }
+  bridge(name) {
+    return this.service.echo.hello(name);
+  }
+}
+
+module.exports = Hello
+
+// {app_root}/app/service/echo.js
+const { Service } = require('egg');
+const sleep = time => new Promise(resolve => setTimeout(resolve, time));
+class EchoService extends Service {
+  async hello(name) {
+    await sleep(1500);
+    return `hello ${name}`;
+  }
+}
+
+module.exports = EchoService;
+
+
+// agent.js
+const ret = await agent.bridge().hello("world");
+console.assert(ret === "hello world");
+```
 
 ## Questions & Suggestions
 
