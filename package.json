@@ -1,14 +1,16 @@
 {
   "name": "egg-bridge",
   "version": "1.0.0",
-  "description": "",
+  "description": "execute egg service in worker processes or agent process",
   "eggPlugin": {
     "name": "bridge"
   },
   "keywords": [
     "egg",
     "eggPlugin",
-    "egg-plugin"
+    "egg-plugin",
+    "bridge",
+    "eggBridge"
   ],
   "dependencies": {},
   "devDependencies": {
@@ -37,19 +39,20 @@
   "files": [
     "app.js",
     "agent.js",
-    "config"
+    "config",
+    "lib"
   ],
   "ci": {
     "version": "8, 9"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eggjs/egg-bridge.git"
+    "url": "git+https://github.com/browsnet/egg-bridge.git"
   },
   "bugs": {
-    "url": "https://github.com/eggjs/egg/issues"
+    "url": "https://github.com/browsnet/egg-bridge/issues"
   },
-  "homepage": "https://github.com/eggjs/egg-bridge#readme",
-  "author": "browsnet",
+  "homepage": "https://github.com/browsnet/egg-bridge#readme",
+  "author": "browsnet <browsnet@163.com>",
   "license": "MIT"
 }

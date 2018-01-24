@@ -133,8 +133,14 @@ module.exports = EchoService;
 
 
 // agent.js
-const ret = await agent.bridge().hello("world");
-console.assert(ret === "hello world");
+module.exports = agent => {
+  agent.messenger.on('egg-ready', async () => {
+    const ret = await agent.bridge().hello('world');
+    console.log(ret);
+  });
+};
+
+see [example/app/bridge](example/app/bridge) for more detail.
 ```
 
 ## Questions & Suggestions
